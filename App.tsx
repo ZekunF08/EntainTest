@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -26,6 +26,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {getRacing} from './src/api/getRacing';
+import {RacingData, RaceSummaries} from './src/interfaces/racingData.interface';
 
 const Section: React.FC<{
   title: string;
@@ -57,10 +59,26 @@ const Section: React.FC<{
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-
+  const [nextToGo, setNextToGo] = useState<string[] | null>();
+  const [raceSummary, setRaceSummary] = useState<RaceSummaries | null>();
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  useEffect(() => {
+    getRacing().then(response => {
+      console.log('data', response);
+      var racingData: RacingData = response.data;
+      const nextTogo = racingData.next_to_go_ids;
+      setNextToGo(nextTogo);
+      console.log('nextTogo', nextTogo);
+      const summaries = racingData.race_summaries;
+      setRaceSummary(summaries);
+      console.log('summaries', summaries);
+    });
+    // return () => {
+    //   second;
+    // };
+  }, []);
 
   return (
     <SafeAreaView style={backgroundStyle}>
