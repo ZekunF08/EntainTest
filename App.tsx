@@ -72,6 +72,7 @@ const App = () => {
       setNextToGo(nextTogo);
       console.log('nextTogo', nextTogo);
       const summaries = racingData.race_summaries;
+      console.log('summarry', summaries[nextTogo[0]]);
       setRaceSummary(summaries);
       console.log('summaries', summaries);
     });
@@ -79,7 +80,6 @@ const App = () => {
     //   second;
     // };
   }, []);
-
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
