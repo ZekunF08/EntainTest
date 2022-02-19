@@ -58,9 +58,6 @@ const MainView: React.FC = () => {
       return false;
     });
     setRaceSummary(newDisplayData);
-    // return () => {
-    //   second;
-    // };
   }, [toggleHorse, toggleGreyhound, toggleHarness, displayData]);
 
   const backgroundStyle = {
@@ -79,17 +76,7 @@ const MainView: React.FC = () => {
         dispatch({type: UPDATE_RACE_DATA, payload: summaries});
       });
     }
-    // return () => {
-    //   dispatch({type: UPDATE_RACE_DATA, payload: []});
-    // };
   }, [displayData, dispatch]);
-  //   useEffect(() => {
-  //     if (raceSummary) {
-  //       raceSummary.sort(
-  //         (a, b) => a.advertised_start.seconds - b.advertised_start.seconds,
-  //       );
-  //     }
-  //   }, [raceSummary]);
 
   const renderItem: ListRenderItem<RaceSummary> = ({item}) => {
     return <RaceItem raceSummary={item} />;

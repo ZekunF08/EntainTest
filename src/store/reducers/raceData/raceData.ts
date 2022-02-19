@@ -25,7 +25,6 @@ export const raceDataReducer = (
       var index = state.raceDataSet.findIndex(
         x => x.race_id === action.payload,
       );
-      console.log('index', index, action.payload);
       var newRaceDataSet = [...state.raceDataSet];
       if (index > -1) {
         newRaceDataSet.splice(index, 1);

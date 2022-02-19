@@ -15,7 +15,6 @@ const CountDown: React.FC<CountDownProps> = ({timeLeft, raceId}) => {
   //remove from list when start over 1 min
   useEffect(() => {
     if (timerCount <= -60) {
-      console.log('timerCount', timerCount, raceId);
       dispatch({type: REMOVE_RACE_DATA, payload: raceId});
     }
   }, [timerCount, raceId, dispatch]);
