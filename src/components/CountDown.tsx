@@ -7,13 +7,25 @@ import {
   ImagePropsBase,
   View,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import {RaceSummary} from '../interfaces/racingData.interface';
+import {REMOVE_RACE_DATA} from '../store/reducers/raceData/types';
 import {timeCalculator} from '../utils/timeCalculator';
 interface CountDownProps {
   timeLeft: number;
+  raceId: string;
 }
-const CountDown: React.FC<CountDownProps> = ({timeLeft}) => {
+const CountDown: React.FC<CountDownProps> = ({timeLeft, raceId}) => {
   const [timerCount, setTimer] = useState(timeLeft);
+  const dispatch = useDispatch();
+
+  //remove from list when start over 1 min
+  useEffect(() => {
+    if (timerCount < -60) {
+      console.log('timerCount', timerCount, raceId);
+      dispatch({type: REMOVE_RACE_DATA, payload: raceId});
+    }
+  }, [timerCount]);
 
   useEffect(() => {
     let interval = setInterval(() => {

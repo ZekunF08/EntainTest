@@ -21,53 +21,24 @@ import {
   ListRenderItem,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {Provider, useSelector} from 'react-redux';
 import {getRacing} from './src/api/getRacing';
+import MainView from './src/components/MainView';
 import RaceItem from './src/components/RaceItem';
 import {
   RacingData,
   RaceSummaries,
   RaceSummary,
 } from './src/interfaces/racingData.interface';
-
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import {store, RootState} from './src/store';
+import {initialState} from './src/store/reducers/raceData/raceData';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [nextToGo, setNextToGo] = useState<string[] | null>();
   const [raceSummary, setRaceSummary] = useState<RaceSummary[] | null>();
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -79,50 +50,29 @@ const App = () => {
       const nextTogo = racingData.next_to_go_ids;
       setNextToGo(nextTogo);
       console.log('nextTogo', nextTogo);
-      const summaries = racingData.race_summaries;
-      console.log('summarry', summaries[nextTogo[0]]);
-      console.log('summary array', Object.values(summaries));
-      setRaceSummary(Object.values(summaries));
+      var summaries = Object.values(racingData.race_summaries);
+      summaries = summaries.sort(
+        (a, b) => a.advertised_start.seconds - b.advertised_start.seconds,
+      );
+      setRaceSummary(summaries);
       console.log('summaries', summaries);
     });
     // return () => {
     //   second;
     // };
   }, []);
-  const renderItem: ListRenderItem<RaceSummary> = ({item}) => {
-    console.log('item', item);
-    return <RaceItem raceSummary={item} />;
-  };
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <FlatList<RaceSummary> data={raceSummary} renderItem={renderItem} />
+  useEffect(() => {
+    if (raceSummary) {
+      raceSummary.sort(
+        (a, b) => a.advertised_start.seconds - b.advertised_start.seconds,
+      );
+    }
+  }, [raceSummary]);
 
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> KE shi wo shui ai
-            de jiu shi bai
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+  return (
+    <Provider store={store}>
+      <MainView />
+    </Provider>
   );
 };
 
