@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -23,7 +22,6 @@ import {RaceCategory} from '../assests/RaceCategory';
 
 const MainView: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [nextToGo, setNextToGo] = useState<string[] | null>();
   const [raceSummary, setRaceSummary] = useState<RaceSummary[] | null>();
   const dispatch = useDispatch();
 
@@ -73,8 +71,6 @@ const MainView: React.FC = () => {
     if (displayData.length <= 5) {
       getRacing().then(response => {
         var racingData: RacingData = response.data;
-        const nextTogo = racingData.next_to_go_ids;
-        setNextToGo(nextTogo);
         var summaries = Object.values(racingData.race_summaries);
         summaries = summaries.sort(
           (a, b) => a.advertised_start.seconds - b.advertised_start.seconds,

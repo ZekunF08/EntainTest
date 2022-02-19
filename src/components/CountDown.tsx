@@ -1,16 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-  ImagePropsBase,
-  View,
-} from 'react-native';
+import {Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {RaceSummary} from '../interfaces/racingData.interface';
+
 import {REMOVE_RACE_DATA} from '../store/reducers/raceData/types';
-import {timeCalculator} from '../utils/timeCalculator';
 interface CountDownProps {
   timeLeft: number;
   raceId: string;
@@ -25,7 +17,7 @@ const CountDown: React.FC<CountDownProps> = ({timeLeft, raceId}) => {
       console.log('timerCount', timerCount, raceId);
       dispatch({type: REMOVE_RACE_DATA, payload: raceId});
     }
-  }, [timerCount]);
+  }, [timerCount, raceId, dispatch]);
 
   useEffect(() => {
     let interval = setInterval(() => {

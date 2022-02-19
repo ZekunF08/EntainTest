@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-  ImagePropsBase,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {getKeyByValue, RaceCategory} from '../assests/RaceCategory';
 import {RaceSummary} from '../interfaces/racingData.interface';
 import {timeCalculator} from '../utils/timeCalculator';
