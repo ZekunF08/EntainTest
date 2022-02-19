@@ -3,6 +3,7 @@ import {Text, View, StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import {REMOVE_RACE_DATA} from '../store/reducers/raceData/types';
+import {fancyTimeFormat} from '../utils/timeCalculator';
 interface CountDownProps {
   timeLeft: number;
   raceId: string;
@@ -22,7 +23,6 @@ const CountDown: React.FC<CountDownProps> = ({timeLeft, raceId}) => {
   useEffect(() => {
     let interval = setInterval(() => {
       setTimer(lastTimerCount => {
-        // lastTimerCount <= 1 && clearInterval(interval);
         return lastTimerCount - 1;
       });
     }, 1000); //each count lasts for a second
@@ -32,7 +32,7 @@ const CountDown: React.FC<CountDownProps> = ({timeLeft, raceId}) => {
 
   return (
     <View style={styles.countDownContainer}>
-      <Text>{timerCount}</Text>
+      <Text style={styles.timeText}>{fancyTimeFormat(timerCount)}</Text>
     </View>
   );
 };
@@ -45,6 +45,10 @@ const styles = StyleSheet.create({
     borderRadius: 5000,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  timeText: {
+    fontWeight: '700',
+    fontSize: 18,
   },
 });
 export default CountDown;
