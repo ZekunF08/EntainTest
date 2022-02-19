@@ -10,11 +10,9 @@ export const api = axios.create({
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log(`response`, response);
     return response.data;
   },
   (error: AxiosError) => {
-    console.log(`error`, JSON.stringify(error));
     return Promise.reject(error);
   },
 );

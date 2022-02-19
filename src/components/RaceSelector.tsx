@@ -30,11 +30,7 @@ const RaceSelector: React.FC = () => {
     dispatch({type: TOGGLE_HARNESS, payload: newValue});
   };
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-      }}>
+    <View style={styles.selectorContainer}>
       <CheckComponent
         label="Horse"
         toggleCheckBox={toggleHorse}
@@ -65,20 +61,43 @@ const CheckComponent: React.FC<CheckComponentProps> = ({
   label,
 }) => {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        padding: 3,
-      }}>
+    <View style={styles.sectionContainer}>
       <CheckBox
         disabled={false}
         value={toggleCheckBox}
         onValueChange={newValue => setToggleCheckBox(newValue)}
       />
-      <Text style={{paddingLeft: 10}}>{label}</Text>
+      <Text style={styles.sectionTitle}>{label}</Text>
     </View>
   );
 };
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    padding: 3,
+    marginBottom: 5,
+  },
+  sectionTitle: {
+    paddingLeft: 10,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+  selectorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+  },
+});
 export default RaceSelector;

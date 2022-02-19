@@ -82,7 +82,7 @@ const MainView: React.FC = () => {
     // return () => {
     //   dispatch({type: UPDATE_RACE_DATA, payload: []});
     // };
-  }, [displayData]);
+  }, [displayData, dispatch]);
   //   useEffect(() => {
   //     if (raceSummary) {
   //       raceSummary.sort(
@@ -97,19 +97,9 @@ const MainView: React.FC = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View
-        style={{
-          backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          flexDirection: 'column',
-          height: '100%',
-        }}>
-        <View
-          style={{
-            height: 150,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={{fontSize: 24}}>Welcome to Entain Test App</Text>
+      <View style={styles.sectionContainer}>
+        <View style={styles.header}>
+          <Text style={styles.headText}>Welcome to Entain Test App</Text>
         </View>
         <RaceSelector />
         <FlatList<RaceSummary>
@@ -124,20 +114,22 @@ const MainView: React.FC = () => {
 };
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+    flexDirection: 'column',
+    height: '100%',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  header: {
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
   },
-  highlight: {
+  headText: {
     fontWeight: '700',
+    fontSize: 24,
   },
 });
 

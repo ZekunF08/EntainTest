@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import {REMOVE_RACE_DATA} from '../store/reducers/raceData/types';
@@ -31,19 +31,20 @@ const CountDown: React.FC<CountDownProps> = ({timeLeft, raceId}) => {
   }, []);
 
   return (
-    <View
-      style={{
-        height: 60,
-        width: 60,
-        borderColor: 'red',
-        borderWidth: 2,
-        borderRadius: 5000,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={styles.countDownContainer}>
       <Text>{timerCount}</Text>
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  countDownContainer: {
+    height: 60,
+    width: 60,
+    borderColor: 'red',
+    borderWidth: 2,
+    borderRadius: 5000,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 export default CountDown;
