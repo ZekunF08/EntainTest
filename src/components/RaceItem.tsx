@@ -8,10 +8,9 @@ import {
   View,
 } from 'react-native';
 import {RaceSummary} from '../interfaces/racingData.interface';
+import {timeCalculator} from '../utils/timeCalculator';
+import CountDown from './CountDown';
 
-// interface CustomButtonProps {
-//   raceSummary?: RaceSummary;
-// }
 const sample: RaceSummary = {
   race_id: 'd9152da3-c20c-4409-9f70-e0508ae38956',
   race_name: 'Shepparton News (200+Rank)',
@@ -57,10 +56,20 @@ const sample: RaceSummary = {
   venue_state: 'VIC',
   venue_country: 'AUS',
 };
-const RaceItem: React.FC = () => {
+interface RaceItemProps {
+  raceSummary: RaceSummary;
+}
+const RaceItem: React.FC<RaceItemProps> = ({raceSummary}) => {
+  const timeLeft = timeCalculator(raceSummary.advertised_start.seconds);
   return (
     <View style={styles.item}>
-      <Text style={styles.title}>{sample.race_name}</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>{`${raceSummary.meeting_name}`}</Text>
+        <Text style={styles.title}>{`${raceSummary.race_number}`}</Text>
+      </View>
+      <View>
+        <CountDown timeLeft={timeLeft} />
+      </View>
     </View>
   );
 };
@@ -70,6 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9c2ff',
     padding: 20,
     marginVertical: 8,
+    flexDirection: 'row',
   },
   header: {
     fontSize: 32,
@@ -77,6 +87,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+  },
+  infoContainer: {
+    flexDirection: 'column',
+    flex: 1,
   },
 });
 

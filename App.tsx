@@ -17,6 +17,8 @@ import {
   Text,
   useColorScheme,
   View,
+  FlatList,
+  ListRenderItem,
 } from 'react-native';
 
 import {
@@ -27,7 +29,12 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import {getRacing} from './src/api/getRacing';
-import {RacingData, RaceSummaries} from './src/interfaces/racingData.interface';
+import RaceItem from './src/components/RaceItem';
+import {
+  RacingData,
+  RaceSummaries,
+  RaceSummary,
+} from './src/interfaces/racingData.interface';
 
 const Section: React.FC<{
   title: string;
@@ -60,10 +67,11 @@ const Section: React.FC<{
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [nextToGo, setNextToGo] = useState<string[] | null>();
-  const [raceSummary, setRaceSummary] = useState<RaceSummaries | null>();
+  const [raceSummary, setRaceSummary] = useState<RaceSummary[] | null>();
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
   useEffect(() => {
     getRacing().then(response => {
       console.log('data', response);
@@ -73,13 +81,18 @@ const App = () => {
       console.log('nextTogo', nextTogo);
       const summaries = racingData.race_summaries;
       console.log('summarry', summaries[nextTogo[0]]);
-      setRaceSummary(summaries);
+      console.log('summary array', Object.values(summaries));
+      setRaceSummary(Object.values(summaries));
       console.log('summaries', summaries);
     });
     // return () => {
     //   second;
     // };
   }, []);
+  const renderItem: ListRenderItem<RaceSummary> = ({item}) => {
+    console.log('item', item);
+    return <RaceItem raceSummary={item} />;
+  };
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -91,6 +104,8 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
+          <FlatList<RaceSummary> data={raceSummary} renderItem={renderItem} />
+
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> KE shi wo shui ai
             de jiu shi bai

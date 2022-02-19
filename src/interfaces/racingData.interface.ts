@@ -3,7 +3,7 @@ export interface RacingData {
   race_summaries: RaceSummaries;
 }
 
-interface RaceSummaries {
+export interface RaceSummaries {
   [key: string]: RaceSummary;
 }
 
