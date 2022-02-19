@@ -11,7 +11,7 @@ import {
   ListRenderItem,
 } from 'react-native';
 
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {useSelector, useDispatch} from 'react-redux';
 import {getRacing} from '../api/getRacing';
 import RaceItem from './RaceItem';
@@ -39,7 +39,6 @@ const MainView: React.FC = () => {
   const toggleHarness = useSelector(
     (state: RootState) => state.raceData.showHarness,
   );
-  console.log('displayData', displayData);
 
   useEffect(() => {
     if (displayData.length === 0) {
@@ -71,21 +70,23 @@ const MainView: React.FC = () => {
   };
 
   useEffect(() => {
-    getRacing().then(response => {
-      var racingData: RacingData = response.data;
-      const nextTogo = racingData.next_to_go_ids;
-      setNextToGo(nextTogo);
-      var summaries = Object.values(racingData.race_summaries);
-      summaries = summaries.sort(
-        (a, b) => a.advertised_start.seconds - b.advertised_start.seconds,
-      );
-      setRaceSummary(summaries);
-      dispatch({type: UPDATE_RACE_DATA, payload: summaries});
-    });
+    if (displayData.length <= 5) {
+      getRacing().then(response => {
+        var racingData: RacingData = response.data;
+        const nextTogo = racingData.next_to_go_ids;
+        setNextToGo(nextTogo);
+        var summaries = Object.values(racingData.race_summaries);
+        summaries = summaries.sort(
+          (a, b) => a.advertised_start.seconds - b.advertised_start.seconds,
+        );
+        setRaceSummary(summaries);
+        dispatch({type: UPDATE_RACE_DATA, payload: summaries});
+      });
+    }
     // return () => {
-    //   second;
+    //   dispatch({type: UPDATE_RACE_DATA, payload: []});
     // };
-  }, []);
+  }, [displayData]);
   //   useEffect(() => {
   //     if (raceSummary) {
   //       raceSummary.sort(
@@ -100,33 +101,28 @@ const MainView: React.FC = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <View
+        style={{
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          flexDirection: 'column',
+          height: '100%',
+        }}>
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            flexDirection: 'column',
-            flex: 1,
-            flexGrow: 1,
+            height: 150,
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-          <View
-            style={{
-              height: 150,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text style={{fontSize: 24}}>Welcome to Entain Test App</Text>
-          </View>
-          <RaceSelector />
-          <FlatList<RaceSummary>
-            keyExtractor={item => item.race_id}
-            data={raceSummary?.slice(0, 5)}
-            renderItem={renderItem}
-            maxToRenderPerBatch={5}
-          />
+          <Text style={{fontSize: 24}}>Welcome to Entain Test App</Text>
         </View>
-      </ScrollView>
+        <RaceSelector />
+        <FlatList<RaceSummary>
+          keyExtractor={item => item.race_id}
+          data={raceSummary?.slice(0, 5)}
+          renderItem={renderItem}
+          maxToRenderPerBatch={5}
+        />
+      </View>
     </SafeAreaView>
   );
 };
