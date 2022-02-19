@@ -7,6 +7,7 @@ import {
   ImagePropsBase,
   View,
 } from 'react-native';
+import {getKeyByValue, RaceCategory} from '../assests/RaceCategory';
 import {RaceSummary} from '../interfaces/racingData.interface';
 import {timeCalculator} from '../utils/timeCalculator';
 import CountDown from './CountDown';
@@ -20,6 +21,10 @@ const RaceItem: React.FC<RaceItemProps> = ({raceSummary}) => {
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{`${raceSummary.meeting_name}`}</Text>
         <Text style={styles.title}>{`${raceSummary.race_number}`}</Text>
+        <Text style={styles.title}>{`${
+          getKeyByValue(RaceCategory, raceSummary.category_id) ??
+          'Unkown Category'
+        }`}</Text>
       </View>
       <View>
         <CountDown timeLeft={timeLeft} raceId={raceSummary.race_id} />

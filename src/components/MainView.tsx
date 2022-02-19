@@ -18,17 +18,53 @@ import RaceItem from './RaceItem';
 import {RacingData, RaceSummary} from '../interfaces/racingData.interface';
 import {RootState} from '../store';
 import {UPDATE_RACE_DATA} from '../store/reducers/raceData/types';
+import RaceSelector from './RaceSelector';
+import {RaceCategory} from '../assests/RaceCategory';
 
 const MainView: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [nextToGo, setNextToGo] = useState<string[] | null>();
   const [raceSummary, setRaceSummary] = useState<RaceSummary[] | null>();
   const dispatch = useDispatch();
+
   const displayData = useSelector(
     (state: RootState) => state.raceData.raceDataSet,
   );
-
+  const toggleHorse = useSelector(
+    (state: RootState) => state.raceData.showHorse,
+  );
+  const toggleGreyhound = useSelector(
+    (state: RootState) => state.raceData.showGreyhound,
+  );
+  const toggleHarness = useSelector(
+    (state: RootState) => state.raceData.showHarness,
+  );
   console.log('displayData', displayData);
+
+  useEffect(() => {
+    if (displayData.length === 0) {
+      return;
+    }
+    if (toggleHorse && toggleGreyhound && toggleHarness) {
+      setRaceSummary(displayData);
+    }
+    var newDisplayData = displayData.filter(x => {
+      if (toggleGreyhound && x.category_id === RaceCategory.GreyhoundRacing) {
+        return true;
+      }
+      if (toggleHarness && x.category_id === RaceCategory.HarnessRacing) {
+        return true;
+      }
+      if (toggleHorse && x.category_id === RaceCategory.HorseRacing) {
+        return true;
+      }
+      return false;
+    });
+    setRaceSummary(newDisplayData);
+    // return () => {
+    //   second;
+    // };
+  }, [toggleHorse, toggleGreyhound, toggleHarness, displayData]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -67,14 +103,25 @@ const MainView: React.FC = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            flexDirection: 'column',
+            flex: 1,
+            flexGrow: 1,
           }}>
+          <View
+            style={{
+              height: 150,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text style={{fontSize: 24}}>Welcome to Entain Test App</Text>
+          </View>
+          <RaceSelector />
           <FlatList<RaceSummary>
             keyExtractor={item => item.race_id}
-            data={displayData?.slice(0, 5)}
+            data={raceSummary?.slice(0, 5)}
             renderItem={renderItem}
             maxToRenderPerBatch={5}
           />
