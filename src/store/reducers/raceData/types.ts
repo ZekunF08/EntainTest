@@ -1,9 +1,4 @@
 import {RaceSummary} from '../../../interfaces/racingData.interface';
-
-export const CHECK_IN_ME_SUCCESS = 'CHECK_IN_ME_SUCCESS';
-export const CHECK_IN_CREATE_GUEST_SUCCESS = 'CHECK_IN_CREATE_GUEST_SUCCESS';
-export const CHECK_IN_GET_DISPENSARY_SUCCESS =
-  'CHECK_IN_GET_DISPENSARY_SUCCESS';
 export const UPDATE_RACE_DATA = 'UPDATE_RACE_DATA';
 export const TOGGLE_GREYHOUND = 'TOGGLE_GREYHOUND';
 export const TOGGLE_HARNESS = 'TOGGLE_HARNESS';
